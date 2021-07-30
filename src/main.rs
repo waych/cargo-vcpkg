@@ -255,6 +255,7 @@ fn build(opt: Opt) -> Result<(), anyhow::Error> {
     v.args(vcpkg_ports.as_slice());
     v.stdin(Stdio::null());
     v.stdout(Stdio::piped());
+    v.stderr(Stdio::piped());
 
     let mut output = v.spawn()?;
 
