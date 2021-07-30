@@ -253,6 +253,7 @@ fn build(opt: Opt) -> Result<(), anyhow::Error> {
     v.arg("install");
     v.arg("--recurse");
     v.args(vcpkg_ports.as_slice());
+    v.stdin(Stdio::null());
     v.stdout(Stdio::piped());
 
     let mut output = v.spawn()?;
