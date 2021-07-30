@@ -276,12 +276,18 @@ fn build(opt: Opt) -> Result<(), anyhow::Error> {
         // bar.set_position(num);
         //    Building [==============================================> ] 58/59
     }
+    let err_reader = BufReader::new(output.stderr.take().context("could not get stderr")?);
+    for line in err_reader.lines().flat_map(Result::ok) {
+        println!("err: {}", line);
+    }
     // grab anything that is left
     let output = output.wait_with_output()?;
 
     if !output.status.success() {
+        if verbose {
             println!("-- stdout --\n{}", String::from_utf8_lossy(&output.stdout));
             println!("-- stderr --\n{}", String::from_utf8_lossy(&output.stderr));
+        }
         bail!("failed");
     }
 
@@ -418,8 +424,10 @@ fn run_command(mut cmd: Command, verbose: bool) -> Result<Output, anyhow::Error>
     let output = cmd.output()?;
 
     if !output.status.success() {
+        if !verbose {
             println!("-- stdout --\n{}", String::from_utf8_lossy(&output.stdout));
             println!("-- stderr --\n{}", String::from_utf8_lossy(&output.stderr));
+        }
         bail!("failed");
     }
 
