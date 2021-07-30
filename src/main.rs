@@ -280,10 +280,8 @@ fn build(opt: Opt) -> Result<(), anyhow::Error> {
     let output = output.wait_with_output()?;
 
     if !output.status.success() {
-        if !verbose {
             println!("-- stdout --\n{}", String::from_utf8_lossy(&output.stdout));
             println!("-- stderr --\n{}", String::from_utf8_lossy(&output.stderr));
-        }
         bail!("failed");
     }
 
@@ -420,10 +418,8 @@ fn run_command(mut cmd: Command, verbose: bool) -> Result<Output, anyhow::Error>
     let output = cmd.output()?;
 
     if !output.status.success() {
-        if !verbose {
             println!("-- stdout --\n{}", String::from_utf8_lossy(&output.stdout));
             println!("-- stderr --\n{}", String::from_utf8_lossy(&output.stderr));
-        }
         bail!("failed");
     }
 
